@@ -7,6 +7,8 @@ struct IntArray {
   int last() const;
   IntArray(int i);
   ~IntArray();
+  int * a;
+  size_t k;
 };
 
 int main()
@@ -19,22 +21,25 @@ int main()
     //a.add(next);
     while (std::cin >> next)
     {
-        a.add(next);
+      a.add(next);
     }
     if (std::cin.fail() && !std::cin.eof())
     {
-        return 1;
+      return 1;
     }
     size_t count = 1;
     for (size_t i = 0; i < a.size() - 1; ++i)
     {
-        int d = a.get(i);
-        count += !(d % a.last());
+      int d = a.get(i);
+      count += !(d % a.last());
     }
     std::cout << count << "\n";
   }
-  catch (const std::bad_alloc) {
+  catch (const std::bad_alloc()) {
     return 2;
   }
 }
 
+IntArray::~IntArray() {
+  delete[] a;
+}
