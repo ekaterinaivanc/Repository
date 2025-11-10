@@ -37,6 +37,7 @@ int main()
   catch (const std::bad_alloc()) {
     return 2;
   }
+  return 0;
 }
 
 IntArray::~IntArray() {
