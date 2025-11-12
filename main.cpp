@@ -3,13 +3,15 @@
 struct IntArray {
   void add(int i);
   int get(size_t id) const noexcept;
-  size_t size() const noexcept;
+  size_t getSize() const noexcept;
   int last() const noexcept;
   IntArray(int i);
   ~IntArray();
   int * a;
-  size_t k;
+  size_t size;
   int at(size_t id()) const;
+  IntArray(const IntArray & rhs); //конструктор копирования
+  IntArray & operator=(const IntArray & rhs); //оператор копирующего присваивания 
 };
 
 int main()
@@ -27,7 +29,7 @@ int main()
       return 1;
     }
     size_t count = 1;
-    for (size_t i = 0; i < a.size() - 1; ++i)
+    for (size_t i = 0; i < a.getSize() - 1; ++i)
     {
       int d = a.get(i);
       count += !(d % a.last());
@@ -46,7 +48,7 @@ IntArray::~IntArray() {
 
 IntArray::IntArray(int i) :
   a(new int[1]),
-  k(1)
+  size(1)
 {
   * a = i;
 }
@@ -56,24 +58,48 @@ int IntArray::get(size_t id) const noexcept
   return a[id];
 }
 
-size_t IntArray::size() const noexcept
+size_t IntArray::getSize() const noexcept
 {
-  return k;
+  return size;
 }
 
 int IntArray::last() const noexcept
 {
-  return get(size() - 1);
+  return get(getSize() - 1);
 }
 
 void IntArray::add(int i)
 {
-  int * tmp = new int[size() + 1];
-  for (size_t i = 0; i < size(); ++i)
+  int * tmp = new int[getSize() + 1];
+  for (size_t i = 0; i < getSize(); ++i)
   {
     tmp[i] = get(i);
   }
   delete[] a;
   a = tmp;
-  ++k;
+  ++size;
+}
+
+/*
+IntArray::IntArray (const IntArray & rhs) :
+  data(new int [rhs.getSize()]);
+  size(rhs.getSize())
+{
+  for ()
+  {
+
+  }
+}
+*/
+
+IntArray & IntArray::operator=(const IntArray & rhs)
+{
+  int * tmp = new int [rhs.getSize()];
+  for (size_t i = 0; i < rhs.getSize(); ++i)
+  {
+    delete[] a;
+    a = tmp;
+    size = rhs.getSize();
+    return * this; //то, что слева
+  }
 }
