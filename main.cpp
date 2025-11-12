@@ -12,6 +12,8 @@ struct IntArray {
   int at(size_t id()) const;
   IntArray(const IntArray & rhs); //конструктор копирования
   IntArray & operator=(const IntArray & rhs); //оператор копирующего присваивания 
+  IntArray (IntArray && rhs);
+  IntArray & operator=(IntArray && rhs);
 };
 
 int main()
@@ -80,17 +82,15 @@ void IntArray::add(int i)
   ++size;
 }
 
-/*
 IntArray::IntArray (const IntArray & rhs) :
-  data(new int [rhs.getSize()]);
+  a(new int [rhs.getSize()]),
   size(rhs.getSize())
 {
-  for ()
+  for (size_t i = 0; i < getSize(); ++i)
   {
-
+    a[i] = rhs.get(i);
   }
 }
-*/
 
 IntArray & IntArray::operator=(const IntArray & rhs)
 {
@@ -102,4 +102,23 @@ IntArray & IntArray::operator=(const IntArray & rhs)
     size = rhs.getSize();
     return * this; //то, что слева
   }
+}
+
+IntArray::IntArray (IntArray && rhs):
+a(rhs.a),
+size(rhs.getSize())
+{
+  rhs.a = nullptr;
+}
+
+//IntArray c (std::move(b)) перемещение
+//IntArray p (a) копирование
+
+IntArray & IntArray::operator=(IntArray && rhs)
+{
+  delete[] a;
+  a = rhs.a;
+  size = rhs.size;
+  rhs.a = nullptr;
+  return * this;
 }
