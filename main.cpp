@@ -103,3 +103,53 @@ struct IntArray
     ++size;
   }
 };
+
+struct IntMatrix 
+{
+  IntArray data;
+  size_t rows;
+  size_t cols;
+
+  IntMatrix(size_t r = 0, size_t c = 0) : 
+  data(r * c), 
+  rows(r), 
+  cols(c) 
+  {
+  }
+
+  bool inputMatrix (const char * file) 
+  {
+  }
+
+  size_t getRows() const 
+  { 
+    return rows; 
+  }
+
+  size_t getCols() const 
+  { 
+    return cols; 
+  }
+
+  int get(size_t i, size_t j) const 
+  {
+    return data.get(i * cols + j);
+  }
+
+  void set(size_t i, size_t j, int v) 
+  {
+    data.set(i * cols + j, v);
+  }
+
+  void print() const 
+  {
+  }
+
+  bool addColumn(size_t after, int v)
+  {
+  }
+
+  bool addRowAndColumn(size_t afterRow, size_t afterCol)
+  {
+  }
+};
