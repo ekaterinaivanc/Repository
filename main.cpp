@@ -175,9 +175,48 @@ struct IntMatrix
 
   bool addColumn(size_t after, int v)
   {
+    if (after > cols) return false;
+    IntMatrix newMatrix;
+    newMatrix.rows = rows;
+    newMatrix.cols = cols + 1;
+    newMatrix.data = IntArray(newMatrix.rows * newMatrix.cols, 0);
+        
+    for (size_t i = 0; i < rows; ++i) 
+    {
+      for (size_t j = 0; j < after; ++j) 
+      {
+        newMatrix.set(i, j, get(i, j));
+      }       
+      newMatrix.set(i, after, v);
+      for (size_t j = after; j < cols; ++j) 
+      {
+        newMatrix.set(i, j + 1, get(i, j));
+      }
+    }
+    * this = newMatrix;
+    return true;
   }
 
   bool addRowAndColumn(size_t afterRow, size_t afterCol)
   {
+    if (afterRow > rows || afterCol > cols) 
+    {
+      return false;
+    }
+    IntMatrix newMatrix;
+    newMatrix.rows = rows + 1;
+    newMatrix.cols = cols + 1;
+    newMatrix.data = IntArray(newMatrix.rows * newMatrix.cols, 0);
+    for (size_t i = 0; i < rows; ++i) 
+    {
+      for (size_t j = 0; j < cols; ++j) 
+      {
+        size_t new_i = i < afterRow ? i : i + 1;
+        size_t new_j = j < afterCol ? j : j + 1;
+        newMatrix.set(new_i, new_j, get(i, j));
+      }
+    }
+    * this = newMatrix;
+    return true;
   }
 };
