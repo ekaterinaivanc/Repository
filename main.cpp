@@ -119,6 +119,26 @@ struct IntMatrix
 
   bool inputMatrix (const char * file) 
   {
+    std::ifstream input(file);
+    if (!input)
+    {
+      return false;
+    }
+    size_t r, c;
+    input >> r >> c;
+    rows = r;
+    cols = c;
+    data = IntArray(r * c, 0);
+    for (size_t i = 0; i < r; ++i) 
+    {
+      for (size_t j = 0; j < c; ++j) 
+      {
+        int v;
+        input >> v;
+        set(i, j, v);
+      }
+    }
+    return true;
   }
 
   size_t getRows() const 
@@ -143,6 +163,14 @@ struct IntMatrix
 
   void print() const 
   {
+    for (size_t i = 0; i < rows; ++i) 
+    {
+      for (size_t j = 0; j < cols; ++j) 
+      {
+        std::cout << get(i, j) << " ";
+      }
+      std::cout << "\n";
+    }
   }
 
   bool addColumn(size_t after, int v)
