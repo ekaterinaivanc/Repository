@@ -220,3 +220,60 @@ struct IntMatrix
     return true;
   }
 };
+
+int main(int argc, char ** argv) 
+{
+  if (argc != 2) 
+  {
+    std::cerr << "Incorrect number of arguments" << "\n";
+    return 1;
+  }
+  try
+  {
+    IntMatrix matrix;
+    if (!matrix.inputMatrix(argv[1])) 
+    {
+      std::cerr << "Cannot open file" << "\n";
+      return 1;
+    }
+    std::cout << "Initial matrix:" << "\n";
+    matrix.print();
+    std::cout << "\n";
+
+    int cmd, param1, param2;
+    while (std::cin >> cmd >> param1 >> param2) 
+    {
+      bool success = false;
+      if (cmd == 2) 
+      {
+        success = matrix.addColumn(param1, param2);
+      }
+      else if (cmd == 3) 
+      {
+        success = matrix.addRowAndColumn(param1, param2);
+      }
+      else {
+        std::cerr << "Invalid command" << "\n";
+        return 3;
+      }
+      if (!success) {
+        std::cerr << "Invalid parameters" << "\n";
+        return 3;
+      }
+      matrix.print();
+      std::cout << "\n";
+    }
+
+    if (std::cin.fail() && !std::cin.eof()) 
+    {
+      std::cerr << "Input error" << "\n";
+      return 1;
+    }
+  }
+  catch (std::bad_alloc &)
+  {
+    std::cerr << "Memory allocation failed" << "\n";
+    return 2;
+  }
+  return 0;
+}
